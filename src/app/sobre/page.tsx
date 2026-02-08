@@ -72,7 +72,6 @@ export default function SobrePage() {
                 Posicionamento relevante para sua expressão.
               </p>
 
-              {/* NOVO TEXTO INSERIDO */}
               <p className="text-white/75 leading-relaxed">
                 Nós atendemos aqueles artistas que desejam ter independência, decidir quando
                 lançar, o que lançar e como lançar, sem depender de datas de terceiros, mantendo
@@ -89,9 +88,7 @@ export default function SobrePage() {
 
         {/* Coluna direita */}
         <div className="md:col-span-5 space-y-8">
-          <div className="text-xs tracking-[0.35em] text-white/50">
-            PILARES
-          </div>
+          <div className="text-xs tracking-[0.35em] text-white/50">PILARES</div>
 
           <div className="space-y-8">
             <div className="space-y-2">
