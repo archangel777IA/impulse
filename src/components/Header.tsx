@@ -20,20 +20,19 @@ export default function Header() {
     <header className="sticky top-0 z-50 backdrop-blur border-b border-white/10 bg-black/70">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 py-4 sm:py-6">
         <div className="flex items-center justify-between gap-4">
-          
-          {/* LOGO — corrigida em proporção */}
+          {/* LOGO */}
           <Link
             href="/"
             className="flex items-center flex-shrink-0"
             aria-label="Ir para a página inicial"
+            onClick={() => setOpen(false)}
           >
             <div
               className="
                 relative
                 h-24 w-56
-                sm:h-33 sm:w-32
-                md:h-72 md:w-72
-              
+                sm:h-28 sm:w-64
+                md:h-32 md:w-72
               "
             >
               <Image
@@ -46,23 +45,26 @@ export default function Header() {
             </div>
           </Link>
 
-          {/* MENU DESKTOP — preservado */}
+          {/* MENU DESKTOP */}
           <nav className="hidden md:flex items-center gap-6 text-sm text-white/70">
             <Link href="/sobre" className="hover:text-white transition">
               Sobre
             </Link>
+
             <Link href="/#problem" className="hover:text-white transition">
               Problema
             </Link>
+
             <Link href="/#levels" className="hover:text-white transition">
               Níveis
             </Link>
+
             <Link href="/#how" className="hover:text-white transition">
               Como funciona
             </Link>
           </nav>
 
-          {/* CTA + MOBILE — preservado */}
+          {/* CTA + MOBILE */}
           <div className="flex items-center gap-3 flex-shrink-0">
             <div className="hidden sm:block">
               <Button href="/diagnostico?src=top">Diagnóstico</Button>
@@ -72,6 +74,7 @@ export default function Header() {
               <Link
                 href="/diagnostico?src=top"
                 className="inline-flex items-center justify-center rounded-full px-4 py-2 text-xs font-medium text-black bg-white hover:opacity-90 transition"
+                onClick={() => setOpen(false)}
               >
                 Diagnóstico
               </Link>
@@ -89,7 +92,7 @@ export default function Header() {
           </div>
         </div>
 
-        {/* MENU MOBILE — preservado */}
+        {/* MENU MOBILE */}
         {open && (
           <div className="md:hidden mt-4 rounded-2xl border border-white/10 bg-black/60 overflow-hidden">
             <div className="flex flex-col">
@@ -100,6 +103,7 @@ export default function Header() {
               >
                 Sobre
               </Link>
+
               <Link
                 href="/#problem"
                 className="px-5 py-4 text-white/85 hover:bg-white/5 transition"
@@ -107,6 +111,7 @@ export default function Header() {
               >
                 Problema
               </Link>
+
               <Link
                 href="/#levels"
                 className="px-5 py-4 text-white/85 hover:bg-white/5 transition"
@@ -114,6 +119,7 @@ export default function Header() {
               >
                 Níveis
               </Link>
+
               <Link
                 href="/#how"
                 className="px-5 py-4 text-white/85 hover:bg-white/5 transition"
