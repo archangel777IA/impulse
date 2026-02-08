@@ -102,9 +102,7 @@ export default function DiagnosticForm() {
 
   function canNext(): boolean {
     const v = answers[step.key];
-    // contato é opcional, mas vamos validar no submit
     if (step.key === "contactWhatsapp" || step.key === "contactEmail") return true;
-
     if (!v || String(v).trim().length === 0) return false;
     return true;
   }
@@ -113,12 +111,16 @@ export default function DiagnosticForm() {
     setLoading(true);
     setErr(null);
 
+    // ✅ Pré-abre a aba para não ser bloqueado por popup blocker
+    const preOpened = window.open("about:blank", "_blank", "noopener,noreferrer");
+
     try {
       const hasWhatsapp = String(answers.contactWhatsapp ?? "").trim().length > 0;
       const hasEmail = String(answers.contactEmail ?? "").trim().length > 0;
 
       if (!hasWhatsapp && !hasEmail) {
         setErr("Informe WhatsApp ou e-mail para contato.");
+        if (preOpened) preOpened.close();
         setLoading(false);
         return;
       }
@@ -148,9 +150,17 @@ export default function DiagnosticForm() {
         throw new Error("Não foi possível gerar o link do WhatsApp.");
       }
 
-      window.open(data.link, "_blank", "noopener,noreferrer");
+      // ✅ Se abriu aba, joga o link nela. Se não, usa a mesma aba.
+      if (preOpened) {
+        preOpened.location.href = data.link;
+      } else {
+        window.location.href = data.link;
+      }
+
+      // ✅ Leva para o obrigado (em paralelo ao WhatsApp em nova aba)
       window.location.href = "/obrigado";
     } catch (e: any) {
+      if (preOpened) preOpened.close();
       setErr(e?.message ?? "Falha ao enviar. Tente novamente.");
     } finally {
       setLoading(false);

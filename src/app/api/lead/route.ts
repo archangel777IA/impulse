@@ -4,6 +4,10 @@ function safe(v: any) {
   return String(v ?? "").trim();
 }
 
+function digitsOnly(v: string) {
+  return v.replace(/\D+/g, "");
+}
+
 function buildMessage(body: any) {
   const a = body?.answers ?? {};
   const s = body?.scoring ?? {};
@@ -34,12 +38,13 @@ function buildMessage(body: any) {
     "",
     `Origem: ${origin || "não informada"}`,
     "",
-    "Próximo passo: conversa estratégica."
+    "Próximo passo: conversa estratégica.",
   ].join("\n");
 }
 
 function waLink(phoneWithDDI: string, text: string) {
-  return `https://wa.me/${phoneWithDDI}?text=${encodeURIComponent(text)}`;
+  const phone = digitsOnly(phoneWithDDI);
+  return `https://wa.me/${phone}?text=${encodeURIComponent(text)}`;
 }
 
 export async function POST(req: Request) {
@@ -47,9 +52,11 @@ export async function POST(req: Request) {
     const body = await req.json();
     const message = buildMessage(body);
 
-    const whatsapp = "5511967470576";
-    const link = waLink(whatsapp, message);
+    // ✅ Número correto (pode ser configurado no Vercel)
+    // Formato esperado: 5511997429410
+    const whatsapp = process.env.WHATSAPP_TO || "5511997429410";
 
+    const link = waLink(whatsapp, message);
     return NextResponse.json({ ok: true, link });
   } catch (error: any) {
     return NextResponse.json(
