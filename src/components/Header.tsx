@@ -16,6 +16,8 @@ export default function Header() {
     return () => window.removeEventListener("keydown", onEsc);
   }, []);
 
+  const close = () => setOpen(false);
+
   return (
     <header className="sticky top-0 z-50 backdrop-blur border-b border-white/10 bg-black/70">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 py-4 sm:py-6">
@@ -25,16 +27,9 @@ export default function Header() {
             href="/"
             className="flex items-center flex-shrink-0"
             aria-label="Ir para a página inicial"
-            onClick={() => setOpen(false)}
+            onClick={close}
           >
-            <div
-              className="
-                relative
-                h-24 w-56
-                sm:h-28 sm:w-64
-                md:h-32 md:w-72
-              "
-            >
+            <div className="relative h-24 w-56 sm:h-28 sm:w-64 md:h-32 md:w-72">
               <Image
                 src="/logo-impulse.png"
                 alt="Impulse"
@@ -51,17 +46,16 @@ export default function Header() {
               Sobre
             </Link>
 
-            <Link href="/#problem" className="hover:text-white transition">
+            {/* Âncoras NATIVAS (funciona sempre) */}
+            <a href="/#problem" className="hover:text-white transition">
               Problema
-            </Link>
-
-            <Link href="/#levels" className="hover:text-white transition">
+            </a>
+            <a href="/#levels" className="hover:text-white transition">
               Níveis
-            </Link>
-
-            <Link href="/#how" className="hover:text-white transition">
+            </a>
+            <a href="/#how" className="hover:text-white transition">
               Como funciona
-            </Link>
+            </a>
           </nav>
 
           {/* CTA + MOBILE */}
@@ -74,7 +68,7 @@ export default function Header() {
               <Link
                 href="/diagnostico?src=top"
                 className="inline-flex items-center justify-center rounded-full px-4 py-2 text-xs font-medium text-black bg-white hover:opacity-90 transition"
-                onClick={() => setOpen(false)}
+                onClick={close}
               >
                 Diagnóstico
               </Link>
@@ -99,34 +93,33 @@ export default function Header() {
               <Link
                 href="/sobre"
                 className="px-5 py-4 text-white/85 hover:bg-white/5 transition"
-                onClick={() => setOpen(false)}
+                onClick={close}
               >
                 Sobre
               </Link>
 
-              <Link
+              {/* Âncoras NATIVAS no mobile */}
+              <a
                 href="/#problem"
                 className="px-5 py-4 text-white/85 hover:bg-white/5 transition"
-                onClick={() => setOpen(false)}
+                onClick={close}
               >
                 Problema
-              </Link>
-
-              <Link
+              </a>
+              <a
                 href="/#levels"
                 className="px-5 py-4 text-white/85 hover:bg-white/5 transition"
-                onClick={() => setOpen(false)}
+                onClick={close}
               >
                 Níveis
-              </Link>
-
-              <Link
+              </a>
+              <a
                 href="/#how"
                 className="px-5 py-4 text-white/85 hover:bg-white/5 transition"
-                onClick={() => setOpen(false)}
+                onClick={close}
               >
                 Como funciona
-              </Link>
+              </a>
             </div>
           </div>
         )}

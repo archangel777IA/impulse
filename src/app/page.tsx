@@ -1,142 +1,181 @@
 import Link from "next/link";
 
-export const metadata = {
-  title: "Sobre | Impulse",
-  description:
-    "Impulse não é venda de conhecimento. É acompanhamento de carreira e desenvolvimento artístico.",
-};
-
-export default function SobrePage() {
+export default function HomePage() {
   return (
-    <main className="max-w-5xl mx-auto px-6 py-16 md:py-20">
-      {/* Topo */}
-      <section className="space-y-8">
-        <div className="inline-flex items-center gap-3">
-          <span className="h-2 w-2 rounded-full bg-white/70" />
-          <span className="text-xs tracking-[0.35em] text-white/60">
-            SOBRE A IMPULSE
-          </span>
-        </div>
+    <main className="relative">
+      {/* HERO */}
+      <section className="relative min-h-[90vh] flex items-center">
+        {/* overlay do fundo */}
+        <div className="absolute inset-0 bg-black/50 pointer-events-none" />
 
-        <div className="space-y-4">
-          <h1 className="text-3xl md:text-5xl font-semibold leading-tight text-white">
-            Impulse não é venda de conhecimento,
-            <span className="block text-white/80">
-              é acompanhamento de carreira e desenvolvimento artístico.
-            </span>
-          </h1>
+        <div className="relative z-10 max-w-5xl mx-auto px-6 py-24">
+          <div className="max-w-3xl space-y-6">
+            <h1 className="text-4xl md:text-6xl font-semibold leading-tight text-white">
+              Clareza, direção e
+              <span className="block text-white/80">
+                posicionamento real para sua carreira artística.
+              </span>
+            </h1>
 
-          <p className="text-base md:text-lg text-white/70 leading-relaxed max-w-3xl">
-            Sabe aqueles detalhes que a maioria das empresas deixa passar? Nós damos atenção,
-            extraindo o máximo de qualidade e expressão que o seu projeto musical pode alcançar.
-          </p>
-        </div>
+            <p className="text-2xl md:text-3xl text-white/60 font-normal -mt-2">
+              Leve sua música mais longe.
+            </p>
 
-        <div className="flex flex-col sm:flex-row gap-3 pt-2">
-          <Link
-            href="/diagnostico?src=sobre"
-            className="inline-flex items-center justify-center rounded-full px-6 py-3 text-sm font-medium text-black bg-white hover:opacity-90 transition"
-          >
-            Fazer diagnóstico
-          </Link>
+            <p className="text-lg md:text-xl text-white/70 leading-relaxed">
+              A Impulse acompanha artistas que desejam estruturar a carreira
+              musical com autonomia, consciência e decisões bem direcionadas.
+            </p>
 
-          <Link
-            href="/"
-            className="inline-flex items-center justify-center rounded-full px-6 py-3 text-sm font-medium border border-white/15 text-white/80 hover:text-white transition"
-          >
-            Voltar para a home
-          </Link>
+            <div className="flex flex-col sm:flex-row gap-4 pt-4">
+              <Link
+                href="/diagnostico?src=hero"
+                className="inline-flex items-center justify-center rounded-full px-7 py-4 text-sm font-medium text-black bg-white hover:opacity-90 transition"
+              >
+                Fazer diagnóstico
+              </Link>
+
+              <a
+                href="/#problem"
+                className="inline-flex items-center justify-center rounded-full px-7 py-4 text-sm font-medium border border-white/20 text-white/80 hover:text-white transition"
+              >
+                Entender melhor
+              </a>
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* Separador */}
-      <div className="my-14 md:my-16 border-t border-white/10" />
+      {/* PROBLEM */}
+      <section
+        id="problem"
+        className="relative py-24 md:py-32 border-t border-white/10"
+      >
+        <div className="max-w-5xl mx-auto px-6 grid gap-12 md:grid-cols-12">
+          <div className="md:col-span-6 space-y-6">
+            <div className="text-xs tracking-[0.35em] text-white/50">
+              O PROBLEMA
+            </div>
 
-      {/* Corpo editorial */}
-      <section className="grid gap-10 md:grid-cols-12">
-        {/* Coluna esquerda */}
-        <div className="md:col-span-7 space-y-10">
-          <div className="space-y-3 text-white/75 leading-relaxed">
-            <p>Você dá a ideia, a gente desenvolve. Simples e direto.</p>
-            <p>
-              A gente não veio para resolver problemas. A gente veio para trazer clareza sobre
-              onde você quer chegar com sua música, e construir posicionamento real para sua arte.
+            <h2 className="text-3xl md:text-4xl font-semibold text-white leading-tight">
+              Informação não falta.
+              <span className="block text-white/80">Falta direção.</span>
+            </h2>
+
+            <p className="text-white/70 leading-relaxed">
+              A maioria dos artistas até estuda, consome conteúdo e produz,
+              mas continua travado por não saber qual decisão tomar,
+              quando avançar e o que realmente importa agora.
+            </p>
+
+            <p className="text-white/60 leading-relaxed">
+              Sem clareza, toda ação vira tentativa. E tentativa constante
+              não constrói posicionamento.
             </p>
           </div>
 
-          {/* Destaque editorial */}
-          <div className="relative">
-            <div className="absolute -left-3 top-0 bottom-0 w-[2px] bg-white/20" />
-            <div className="pl-6 space-y-4">
-              <p className="text-xl md:text-2xl font-semibold text-white leading-snug">
-                Posicionamento relevante para sua expressão.
-              </p>
-
-              {/* NOVO TEXTO INSERIDO */}
-              <p className="text-white/75 leading-relaxed">
-                Nós atendemos aqueles artistas que desejam ter independência, decidir quando
-                lançar, o que lançar e como lançar, sem depender de datas de terceiros, mantendo
-                o controle do próprio projeto nas próprias mãos.
-              </p>
-
-              <p className="text-white/70 leading-relaxed">
-                Não é maquiagem. Não é promessa vazia. É estrutura para a sua música falar com
-                verdade, com consistência e presença.
+          <div className="md:col-span-6 space-y-6">
+            <div className="rounded-2xl border border-white/10 bg-black/40 p-6">
+              <p className="text-white/80 leading-relaxed">
+                A Impulse não entrega atalhos, nem fórmulas genéricas.
+                Entregamos estrutura para decisões conscientes
+                e crescimento consistente.
               </p>
             </div>
           </div>
         </div>
+      </section>
 
-        {/* Coluna direita */}
-        <div className="md:col-span-5 space-y-8">
-          <div className="text-xs tracking-[0.35em] text-white/50">
-            PILARES
-          </div>
-
-          <div className="space-y-8">
-            <div className="space-y-2">
-              <div className="text-white font-semibold text-lg">Atenção ao detalhe</div>
-              <div className="h-[1px] bg-white/10" />
-              <p className="text-white/70 leading-relaxed">
-                A maioria ignora. Nós olhamos. Extraímos expressão e qualidade até o projeto
-                comunicar o que ele realmente é.
-              </p>
+      {/* LEVELS */}
+      <section
+        id="levels"
+        className="relative py-24 md:py-32 border-t border-white/10"
+      >
+        <div className="max-w-5xl mx-auto px-6 space-y-14">
+          <div className="max-w-3xl space-y-4">
+            <div className="text-xs tracking-[0.35em] text-white/50">
+              NÍVEIS
             </div>
 
-            <div className="space-y-2">
-              <div className="text-white font-semibold text-lg">
-                Clareza antes de qualquer movimento
-              </div>
-              <div className="h-[1px] bg-white/10" />
-              <p className="text-white/70 leading-relaxed">
-                Clareza sobre o destino. Direção no caminho. Sem ruído. Sem conteúdo que não vira
-                decisão.
-              </p>
-            </div>
+            <h2 className="text-3xl md:text-4xl font-semibold text-white">
+              Cada artista está em um momento
+            </h2>
 
-            <div className="space-y-2">
-              <div className="text-white font-semibold text-lg">
-                Execução simples e direta
-              </div>
-              <div className="h-[1px] bg-white/10" />
-              <p className="text-white/70 leading-relaxed">
-                Você dá a ideia, a gente desenvolve. Com critério técnico, consistência e
-                posicionamento real.
-              </p>
-            </div>
-          </div>
-
-          {/* CTA lateral */}
-          <div className="pt-2">
-            <Link
-              href="/diagnostico?src=sobre-bottom"
-              className="inline-flex w-full items-center justify-center rounded-full px-6 py-3 text-sm font-medium text-black bg-white hover:opacity-90 transition"
-            >
-              Quero clareza no meu projeto
-            </Link>
-            <p className="mt-3 text-xs text-white/50 text-center">
-              A análise orienta o próximo passo com honestidade.
+            <p className="text-white/70 leading-relaxed">
+              Não existe solução única. Existe leitura correta do estágio
+              e execução compatível com ele.
             </p>
+          </div>
+
+          <div className="grid gap-6 md:grid-cols-3">
+            {[
+              {
+                title: "Início",
+                text: "Para quem está começando e precisa organizar base, identidade e rotina.",
+              },
+              {
+                title: "Desenvolvimento",
+                text: "Para quem já produz, mas precisa clarear posicionamento e próximos passos.",
+              },
+              {
+                title: "Escala",
+                text: "Para quem já lança e busca consistência, estratégia e expansão.",
+              },
+            ].map((item) => (
+              <div
+                key={item.title}
+                className="rounded-2xl border border-white/10 bg-black/40 p-6 space-y-3"
+              >
+                <div className="text-lg font-semibold text-white">
+                  {item.title}
+                </div>
+                <p className="text-white/70 leading-relaxed">{item.text}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* HOW */}
+      <section
+        id="how"
+        className="relative py-24 md:py-32 border-t border-white/10"
+      >
+        <div className="max-w-5xl mx-auto px-6 grid gap-12 md:grid-cols-12">
+          <div className="md:col-span-7 space-y-6">
+            <div className="text-xs tracking-[0.35em] text-white/50">
+              COMO FUNCIONA
+            </div>
+
+            <h2 className="text-3xl md:text-4xl font-semibold text-white">
+              Acompanhamento, não promessa
+            </h2>
+
+            <p className="text-white/70 leading-relaxed">
+              O processo começa com diagnóstico, passa por leitura estratégica
+              e se desenvolve com acompanhamento real.
+            </p>
+
+            <p className="text-white/60 leading-relaxed">
+              Sem ilusão, sem empurrar pacotes. Clareza primeiro,
+              execução depois.
+            </p>
+          </div>
+
+          <div className="md:col-span-5 space-y-6">
+            <div className="rounded-2xl border border-white/10 bg-black/40 p-6">
+              <ol className="space-y-4 text-white/80">
+                <li>1. Diagnóstico do momento artístico</li>
+                <li>2. Leitura estratégica e direcionamento</li>
+                <li>3. Acompanhamento e evolução contínua</li>
+              </ol>
+            </div>
+
+            <Link
+              href="/diagnostico?src=how"
+              className="inline-flex w-full items-center justify-center rounded-full px-6 py-4 text-sm font-medium text-black bg-white hover:opacity-90 transition"
+            >
+              Iniciar diagnóstico
+            </Link>
           </div>
         </div>
       </section>
