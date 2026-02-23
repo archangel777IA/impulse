@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect } from "react";
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname } from "next/navigation";
 
-function scrollToHash(hash: string) {
+function tryScrollToHash(hash: string) {
   const id = hash.replace("#", "").trim();
   if (!id) return false;
 
@@ -16,35 +16,29 @@ function scrollToHash(hash: string) {
 
 export default function HashScroll() {
   const pathname = usePathname();
-  const searchParams = useSearchParams();
 
   useEffect(() => {
-    // Tenta rolar sempre que a rota ou query mudar
-    // Isso pega o caso /#problem, /?x=1#problem, etc
+    // Quando a rota muda, tenta rolar para o hash atual (se existir)
     const hash = window.location.hash;
-
     if (!hash) return;
 
     let tries = 0;
-    const maxTries = 60; // 60 * 100ms = 6s
+    const maxTries = 60; // 6s
 
-    const tick = () => {
+    const timer = window.setInterval(() => {
       tries += 1;
-      const ok = scrollToHash(hash);
-      if (ok || tries >= maxTries) {
-        clearInterval(timer);
-      }
-    };
+      const ok = tryScrollToHash(hash);
+      if (ok || tries >= maxTries) window.clearInterval(timer);
+    }, 100);
 
-    // tenta já no próximo frame e depois em intervalos
-    requestAnimationFrame(tick);
-    const timer = window.setInterval(tick, 100);
+    // tenta também no próximo frame
+    requestAnimationFrame(() => tryScrollToHash(hash));
 
-    return () => clearInterval(timer);
-  }, [pathname, searchParams]);
+    return () => window.clearInterval(timer);
+  }, [pathname]);
 
   useEffect(() => {
-    // Também responde a mudanças de hash sem troca de rota
+    // Se o hash mudar sem trocar de rota
     const onHashChange = () => {
       const hash = window.location.hash;
       if (!hash) return;
@@ -52,14 +46,13 @@ export default function HashScroll() {
       let tries = 0;
       const maxTries = 60;
 
-      const tick = () => {
+      const timer = window.setInterval(() => {
         tries += 1;
-        const ok = scrollToHash(hash);
-        if (ok || tries >= maxTries) clearInterval(timer);
-      };
+        const ok = tryScrollToHash(hash);
+        if (ok || tries >= maxTries) window.clearInterval(timer);
+      }, 100);
 
-      requestAnimationFrame(tick);
-      const timer = window.setInterval(tick, 100);
+      requestAnimationFrame(() => tryScrollToHash(hash));
     };
 
     window.addEventListener("hashchange", onHashChange);

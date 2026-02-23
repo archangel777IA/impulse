@@ -1,7 +1,5 @@
 import "./globals.css";
 import Header from "@/components/Header";
-import Footer from "@/components/Footer";
-import FloatingWhatsApp from "@/components/FloatingWhatsApp";
 import HashScroll from "@/components/HashScroll";
 
 export const metadata = {
@@ -16,12 +14,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="pt-BR">
-      <body className="min-h-screen bg-black text-white antialiased flex flex-col">
+      <body className="min-h-screen bg-black text-white antialiased">
         <HashScroll />
         <Header />
-        <div className="flex-1">{children}</div>
-        <Footer />
-        <FloatingWhatsApp />
+        {children}
       </body>
     </html>
   );
