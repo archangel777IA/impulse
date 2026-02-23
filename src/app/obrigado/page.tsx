@@ -1,31 +1,37 @@
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
-import Button from "@/components/Button";
-import { copy } from "@/config/copy";
+import Link from "next/link";
 
 export default function ObrigadoPage() {
   return (
-    <div className="min-h-screen">
-      <Header />
-      <main className="max-w-3xl mx-auto px-6 py-16">
-        <div className="rounded-xl2 border border-line bg-card p-8">
-          <div className="text-xs tracking-[0.35em] text-muted">ENVIADO</div>
-          <h1 className="mt-4 text-3xl md:text-4xl font-semibold tracking-tight">
-            {copy.form.thanksTitle}
-          </h1>
-          <p className="mt-4 text-muted leading-relaxed">{copy.form.thanksText}</p>
+    <main className="max-w-5xl mx-auto px-6 py-20 md:py-28">
+      <div className="max-w-2xl">
+        <div className="text-xs tracking-[0.35em] text-white/50">ENVIADO</div>
 
-          <div className="mt-8 flex flex-wrap gap-3">
-            <Button href="/">Voltar ao site</Button>
-            <Button href="/diagnostico" variant="ghost">Enviar novamente</Button>
-          </div>
+        <h1 className="mt-4 text-3xl md:text-5xl font-semibold leading-tight text-white">
+          Diagnóstico enviado.
+        </h1>
 
-          <p className="mt-6 text-sm text-muted">
-            Se alguma conversa do WhatsApp não abriu, volte e envie novamente, ou libere popups para localhost.
-          </p>
+        <p className="mt-4 text-white/70 leading-relaxed">
+          Se o WhatsApp não abriu automaticamente, toque no botão abaixo para continuar.
+        </p>
+
+        <div className="mt-8 flex flex-col sm:flex-row gap-3">
+          <a
+            href="https://wa.me/5511997429410"
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center justify-center rounded-full px-7 py-4 text-sm font-medium text-black bg-white hover:opacity-90 transition"
+          >
+            Abrir WhatsApp
+          </a>
+
+          <Link
+            href="/"
+            className="inline-flex items-center justify-center rounded-full px-7 py-4 text-sm font-medium border border-white/20 text-white/80 hover:text-white transition"
+          >
+            Voltar para a home
+          </Link>
         </div>
-      </main>
-      <Footer />
-    </div>
+      </div>
+    </main>
   );
 }

@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useMemo, useState } from "react";
 import Button from "./Button";
 import { copy } from "@/config/copy";
@@ -27,6 +28,43 @@ type Step =
   | { key: keyof Answers; label: string; type: "text"; placeholder?: string }
   | { key: keyof Answers; label: string; type: "textarea"; placeholder?: string };
 
+function digitsOnly(v: string) {
+  return v.replace(/\D+/g, "");
+}
+
+function buildWhatsappMessage(answers: Answers, scoring: any) {
+  const a = answers;
+
+  return [
+    "NOVO DIAGNÓSTICO IMPULSE",
+    "",
+    `Nome: ${String(a.contactName ?? "").trim()}`,
+    `Instagram: ${String(a.contactInstagram ?? "").trim()}`,
+    `WhatsApp: ${String(a.contactWhatsapp ?? "").trim()}`,
+    `E-mail: ${String(a.contactEmail ?? "").trim()}`,
+    "",
+    "RESUMO",
+    `Como se define: ${String(a.profile ?? "").trim()}`,
+    `Estilo: ${String(a.style ?? "").trim()}`,
+    `Motivo: ${String(a.reason ?? "").trim()}`,
+    `Frase: ${String(a.selfStatement ?? "").trim()}`,
+    `Maior desafio: ${String(a.biggestChallenge ?? "").trim()}`,
+    `Compromisso: ${String(a.commitment ?? "").trim()}`,
+    `Tempo por semana: ${String(a.weeklyTime ?? "").trim()}`,
+    `Mentalidade de investimento: ${String(a.investmentMindset ?? "").trim()}`,
+    `Postura de decisão: ${String(a.decisionPosture ?? "").trim()}`,
+    "",
+    "QUALIFICAÇÃO",
+    `Nível sugerido: ${String(scoring?.tier ?? "").trim()}`,
+    `Urgência: ${String(scoring?.urgency ?? "").trim()}`,
+  ].join("\n");
+}
+
+function buildWaLink(phone: string, text: string) {
+  const p = digitsOnly(phone);
+  return `https://wa.me/${p}?text=${encodeURIComponent(text)}`;
+}
+
 export default function DiagnosticForm() {
   const steps: Step[] = useMemo(
     () => [
@@ -38,7 +76,6 @@ export default function DiagnosticForm() {
       },
       { key: "style", label: "2) Qual estilo você produz?", type: "text", placeholder: "Ex: Psytrance, Progressive, Techno..." },
       { key: "reason", label: "3) O que te trouxe até a Impulse hoje?", type: "textarea", placeholder: "Conte o que você quer destravar." },
-
       {
         key: "selfStatement",
         label: "4) Qual dessas frases mais parece com você?",
@@ -51,7 +88,6 @@ export default function DiagnosticForm() {
         type: "radio",
         options: ["Som", "Imagem", "Estratégia", "Disciplina / direção", "Tudo isso junto"],
       },
-
       {
         key: "commitment",
         label: "6) Qual seu nível de comprometimento com seu projeto artístico?",
@@ -64,21 +100,18 @@ export default function DiagnosticForm() {
         type: "radio",
         options: ["Até 5h", "5–10h", "10–20h", "Mais de 20h"],
       },
-
       {
         key: "investmentMindset",
         label: "8) Para você, investir em desenvolvimento artístico hoje significa:",
         type: "radio",
         options: ["Algo que precisa ser muito acessível", "Um investimento planejado", "Algo estratégico para crescer", "Algo necessário para escalar"],
       },
-
       {
         key: "decisionPosture",
         label: "9) Se encontrarmos a estrutura certa para você, qual sua postura?",
         type: "radio",
         options: ["Quero entender melhor antes de decidir", "Posso decidir ainda essa semana", "Quero avançar o quanto antes"],
       },
-
       { key: "contactName", label: "Seu nome", type: "text", placeholder: "Como podemos te chamar?" },
       { key: "contactInstagram", label: "Seu Instagram", type: "text", placeholder: "@seuperfil" },
       { key: "contactWhatsapp", label: "WhatsApp (opcional)", type: "text", placeholder: "(DDD) 99999-9999" },
@@ -103,16 +136,12 @@ export default function DiagnosticForm() {
   function canNext(): boolean {
     const v = answers[step.key];
     if (step.key === "contactWhatsapp" || step.key === "contactEmail") return true;
-    if (!v || String(v).trim().length === 0) return false;
-    return true;
+    return !!(v && String(v).trim().length > 0);
   }
 
   async function submit() {
     setLoading(true);
     setErr(null);
-
-    // ✅ Pré-abre a aba para não ser bloqueado por popup blocker
-    const preOpened = window.open("about:blank", "_blank", "noopener,noreferrer");
 
     try {
       const hasWhatsapp = String(answers.contactWhatsapp ?? "").trim().length > 0;
@@ -120,47 +149,26 @@ export default function DiagnosticForm() {
 
       if (!hasWhatsapp && !hasEmail) {
         setErr("Informe WhatsApp ou e-mail para contato.");
-        if (preOpened) preOpened.close();
         setLoading(false);
         return;
       }
 
       const scoring = scoreLead(answers);
+      const msg = buildWhatsappMessage(answers, scoring);
 
-      const payload = {
-        answers,
-        scoring,
-        meta: {
-          url: typeof window !== "undefined" ? window.location.href : "",
-          ts: new Date().toISOString(),
-        },
-      };
+      // Número fixo do seu atendimento
+      const waUrl = buildWaLink("5511997429410", msg);
 
-      const res = await fetch("/api/lead", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-
-      if (!res.ok) throw new Error("Falha ao enviar. Tente novamente.");
-
-      const data = (await res.json()) as { ok: boolean; link?: string };
-
-      if (!data.ok || !data.link) {
-        throw new Error("Não foi possível gerar o link do WhatsApp.");
+      // Tenta abrir em nova aba. Se bloquear, cai para a mesma aba.
+      const win = window.open(waUrl, "_blank");
+      if (!win) {
+        window.location.href = waUrl;
+        return;
       }
 
-      // ✅ Se abriu aba, joga o link nela. Se não, usa a mesma aba.
-      if (preOpened) {
-        preOpened.location.href = data.link;
-      } else {
-        window.location.href = data.link;
-      }
-
-      // ✅ Leva para o obrigado (em paralelo ao WhatsApp em nova aba)
+      // Mantém o usuário no site e leva para a finalização
       window.location.href = "/obrigado";
     } catch (e: any) {
-      if (preOpened) preOpened.close();
       setErr(e?.message ?? "Falha ao enviar. Tente novamente.");
     } finally {
       setLoading(false);
@@ -170,7 +178,9 @@ export default function DiagnosticForm() {
   return (
     <div className="max-w-2xl mx-auto px-6 py-12">
       <div className="text-xs tracking-[0.35em] text-muted">DIAGNÓSTICO</div>
-      <h1 className="mt-4 text-3xl md:text-4xl font-semibold tracking-tight">{copy.form.title}</h1>
+      <h1 className="mt-4 text-3xl md:text-4xl font-semibold tracking-tight">
+        {copy.form.title}
+      </h1>
       <p className="mt-3 text-muted">{copy.form.subtitle}</p>
 
       <div className="mt-8 rounded-xl2 border border-line bg-card p-6">
@@ -231,7 +241,11 @@ export default function DiagnosticForm() {
           {err ? <div className="mt-4 text-sm text-accent">{err}</div> : null}
 
           <div className="mt-8 flex items-center justify-between gap-3">
-            <Button variant="ghost" onClick={() => setIdx((i) => Math.max(0, i - 1))} disabled={idx === 0 || loading}>
+            <Button
+              variant="ghost"
+              onClick={() => setIdx((i) => Math.max(0, i - 1))}
+              disabled={idx === 0 || loading}
+            >
               Voltar
             </Button>
 
@@ -245,10 +259,18 @@ export default function DiagnosticForm() {
               </Button>
             )}
           </div>
+
+          <div className="mt-6 text-xs text-muted">
+            Ao enviar, você confirma que deseja continuar pelo WhatsApp.
+          </div>
+
+          <div className="mt-4">
+            <Link href="/" className="text-xs text-white/60 hover:text-white transition">
+              Voltar para a home
+            </Link>
+          </div>
         </div>
       </div>
-
-      <p className="mt-6 text-sm text-muted">Sem pressão. Sem empurrar pacote. Primeiro, clareza.</p>
     </div>
   );
 }
